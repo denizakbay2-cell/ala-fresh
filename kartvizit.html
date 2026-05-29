@@ -1,0 +1,306 @@
+<!DOCTYPE html>
+<html lang="tr">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover" />
+  <meta name="theme-color" content="#F5F1EA" />
+  <!-- Bu sayfa siteye bağlı değildir ve aramalarda görünmez -->
+  <meta name="robots" content="noindex, nofollow" />
+  <meta name="description" content="Alâ Fresh Tedarik — Alaattin Karaman dijital kartvizit." />
+  <title>Alaattin Karaman — Alâ Fresh Tedarik</title>
+
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+  <link
+    href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@0,300;0,400;0,500;0,600;1,300;1,400&family=Inter:wght@300;400;500;600&display=swap"
+    rel="stylesheet"
+  />
+
+  <style>
+    :root {
+      --bg:     #F5F1EA;
+      --bg-2:   #EDE7DD;
+      --ink:    #1C1C1C;
+      --ink-2:  #6B6B6B;
+      --ink-3:  #A9A294;
+      --line:   #D9D2C5;
+      --accent: #8B7355;
+      --cream:  #FAF7F1;
+
+      --serif: "Cormorant Garamond", "Times New Roman", serif;
+      --sans:  "Inter", -apple-system, BlinkMacSystemFont, "Segoe UI", sans-serif;
+      --ease:  cubic-bezier(0.16, 1, 0.3, 1);
+    }
+
+    * { box-sizing: border-box; margin: 0; padding: 0; }
+    html, body { background: var(--bg); color: var(--ink); }
+    body {
+      font-family: var(--sans);
+      font-weight: 300;
+      line-height: 1.55;
+      letter-spacing: 0.005em;
+      -webkit-font-smoothing: antialiased;
+      -moz-osx-font-smoothing: grayscale;
+      min-height: 100svh;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      padding: clamp(20px, 5vw, 56px);
+    }
+    a { color: inherit; text-decoration: none; }
+    em { font-style: italic; font-family: var(--serif); font-weight: 400; }
+    ::selection { background: var(--ink); color: var(--cream); }
+
+    /* Soft ambient backdrop */
+    body::before {
+      content: "";
+      position: fixed; inset: 0;
+      background:
+        radial-gradient(60% 50% at 50% 0%, rgba(139,115,85,0.10), transparent 70%),
+        radial-gradient(50% 40% at 100% 100%, rgba(139,115,85,0.07), transparent 70%);
+      pointer-events: none;
+    }
+
+    .card {
+      position: relative;
+      width: 100%;
+      max-width: 440px;
+      background: var(--cream);
+      border: 1px solid var(--line);
+      border-radius: 22px;
+      padding: clamp(34px, 7vw, 52px) clamp(26px, 6vw, 46px) clamp(28px, 6vw, 40px);
+      box-shadow:
+        0 1px 0 rgba(255,255,255,0.6) inset,
+        0 30px 70px -30px rgba(28,28,28,0.28);
+      animation: rise 1s var(--ease) both;
+    }
+    @keyframes rise {
+      from { opacity: 0; transform: translateY(24px); }
+      to   { opacity: 1; transform: translateY(0); }
+    }
+
+    .card__logo {
+      display: block;
+      height: clamp(76px, 17vw, 104px);
+      width: auto;
+      margin: 0 auto clamp(26px, 6vw, 34px);
+      -webkit-user-drag: none;
+      user-select: none;
+    }
+
+    .card__head { text-align: center; }
+    .card__eyebrow {
+      font-size: 11px;
+      letter-spacing: 0.4em;
+      text-transform: uppercase;
+      color: var(--accent);
+      margin-bottom: 16px;
+    }
+    .card__name {
+      font-family: var(--serif);
+      font-weight: 400;
+      font-size: clamp(38px, 9vw, 52px);
+      line-height: 1.02;
+      letter-spacing: -0.02em;
+    }
+    .card__role {
+      margin-top: 12px;
+      font-size: 13px;
+      letter-spacing: 0.18em;
+      text-transform: uppercase;
+      color: var(--ink-2);
+    }
+
+    .card__rule {
+      height: 1px;
+      background: var(--line);
+      margin: clamp(26px, 6vw, 34px) 0 clamp(8px, 3vw, 14px);
+    }
+
+    /* Contact rows */
+    .contact {
+      display: flex;
+      align-items: center;
+      gap: 18px;
+      padding: 17px 4px;
+      border-bottom: 1px solid var(--line);
+      transition: transform .4s var(--ease), color .4s var(--ease);
+    }
+    .contact:last-of-type { border-bottom: 0; }
+    a.contact:hover { transform: translateX(4px); }
+    a.contact:hover .contact__value { color: var(--accent); }
+
+    .contact__icon {
+      flex: none;
+      width: 42px; height: 42px;
+      border: 1px solid var(--line);
+      border-radius: 50%;
+      display: grid;
+      place-items: center;
+      color: var(--accent);
+      transition: background .4s var(--ease), border-color .4s var(--ease), color .4s var(--ease);
+    }
+    a.contact:hover .contact__icon {
+      background: var(--ink);
+      border-color: var(--ink);
+      color: var(--cream);
+    }
+    .contact__icon svg { width: 18px; height: 18px; display: block; }
+
+    .contact__text { min-width: 0; }
+    .contact__label {
+      font-size: 10px;
+      letter-spacing: 0.3em;
+      text-transform: uppercase;
+      color: var(--ink-3);
+      margin-bottom: 2px;
+    }
+    .contact__value {
+      font-family: var(--serif);
+      font-size: clamp(19px, 4.6vw, 23px);
+      font-weight: 400;
+      letter-spacing: -0.005em;
+      line-height: 1.25;
+      color: var(--ink);
+      word-break: break-word;
+      transition: color .4s var(--ease);
+    }
+
+    /* Save-contact button */
+    .save {
+      width: 100%;
+      margin-top: clamp(26px, 6vw, 34px);
+      display: inline-flex;
+      align-items: center;
+      justify-content: center;
+      gap: 14px;
+      padding: 18px 28px;
+      border: 1px solid var(--ink);
+      border-radius: 999px;
+      font-family: var(--sans);
+      font-size: 12px;
+      letter-spacing: 0.3em;
+      text-transform: uppercase;
+      color: var(--ink);
+      background: transparent;
+      cursor: pointer;
+      transition: background .4s var(--ease), color .4s var(--ease);
+    }
+    .save:hover { background: var(--ink); color: var(--cream); }
+    .save i { font-style: normal; transition: transform .4s var(--ease); }
+    .save:hover i { transform: translateX(5px); }
+
+    .card__foot {
+      margin-top: 22px;
+      text-align: center;
+      font-size: 10px;
+      letter-spacing: 0.24em;
+      text-transform: uppercase;
+      color: var(--ink-3);
+    }
+
+    @media (prefers-reduced-motion: reduce) {
+      *, *::before, *::after {
+        animation-duration: 0.001ms !important;
+        transition-duration: 0.001ms !important;
+      }
+    }
+  </style>
+</head>
+<body>
+  <main class="card" aria-label="Dijital kartvizit">
+    <img class="card__logo" src="site logo2.svg" alt="Alâ Fresh" />
+
+    <header class="card__head">
+      <p class="card__eyebrow">Alâ Fresh Tedarik</p>
+      <h1 class="card__name">Alaattin Karaman</h1>
+      <p class="card__role">İstanbul · Türkiye</p>
+    </header>
+
+    <div class="card__rule"></div>
+
+    <!-- Telefon -->
+    <a class="contact" href="tel:+905079553261" aria-label="Telefon ile ara">
+      <span class="contact__icon" aria-hidden="true">
+        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round">
+          <path d="M22 16.92v3a2 2 0 0 1-2.18 2 19.8 19.8 0 0 1-8.63-3.07 19.5 19.5 0 0 1-6-6 19.8 19.8 0 0 1-3.07-8.67A2 2 0 0 1 4.11 2h3a2 2 0 0 1 2 1.72c.13.96.36 1.9.7 2.81a2 2 0 0 1-.45 2.11L8.09 9.91a16 16 0 0 0 6 6l1.27-1.27a2 2 0 0 1 2.11-.45c.9.34 1.85.57 2.81.7A2 2 0 0 1 22 16.92z"/>
+        </svg>
+      </span>
+      <span class="contact__text">
+        <span class="contact__label">Telefon</span>
+        <span class="contact__value">+90 507 955 32 61</span>
+      </span>
+    </a>
+
+    <!-- E-posta -->
+    <a class="contact" href="mailto:alaattinkaraman@hotmail.com" aria-label="E-posta gönder">
+      <span class="contact__icon" aria-hidden="true">
+        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round">
+          <rect x="2" y="4" width="20" height="16" rx="2"/>
+          <path d="m2 7 10 6 10-6"/>
+        </svg>
+      </span>
+      <span class="contact__text">
+        <span class="contact__label">E-posta</span>
+        <span class="contact__value">alaattinkaraman@hotmail.com</span>
+      </span>
+    </a>
+
+    <!-- Web sitesi -->
+    <a class="contact" href="https://alafresh.com.tr/" target="_blank" rel="noopener" aria-label="Web sitesini aç">
+      <span class="contact__icon" aria-hidden="true">
+        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round">
+          <circle cx="12" cy="12" r="10"/>
+          <path d="M2 12h20"/>
+          <path d="M12 2a15.3 15.3 0 0 1 0 20 15.3 15.3 0 0 1 0-20z"/>
+        </svg>
+      </span>
+      <span class="contact__text">
+        <span class="contact__label">Web Sitesi</span>
+        <span class="contact__value">alafresh.com.tr</span>
+      </span>
+    </a>
+
+    <button class="save" id="saveBtn" type="button">
+      <span>Rehbere Ekle</span>
+      <i>↓</i>
+    </button>
+
+    <p class="card__foot">Alâ Fresh Tedarik · Toptan Taze Meyve &amp; Sebze</p>
+  </main>
+
+  <script>
+    // "Rehbere Ekle" — generates and downloads a vCard (.vcf) the phone can import.
+    (function () {
+      var btn = document.getElementById('saveBtn');
+      if (!btn) return;
+
+      var vcard = [
+        'BEGIN:VCARD',
+        'VERSION:3.0',
+        'N:Karaman;Alaattin;;;',
+        'FN:Alaattin Karaman',
+        'ORG:Alâ Fresh Tedarik',
+        'TITLE:Alâ Fresh Tedarik',
+        'TEL;TYPE=CELL:+905079553261',
+        'EMAIL;TYPE=INTERNET:alaattinkaraman@hotmail.com',
+        'URL:https://alafresh.com.tr/',
+        'ADR;TYPE=WORK:;;;İstanbul;;;Türkiye',
+        'END:VCARD'
+      ].join('\r\n');
+
+      btn.addEventListener('click', function () {
+        var blob = new Blob([vcard], { type: 'text/vcard;charset=utf-8' });
+        var url = URL.createObjectURL(blob);
+        var a = document.createElement('a');
+        a.href = url;
+        a.download = 'Alaattin-Karaman.vcf';
+        document.body.appendChild(a);
+        a.click();
+        document.body.removeChild(a);
+        setTimeout(function () { URL.revokeObjectURL(url); }, 1000);
+      });
+    })();
+  </script>
+</body>
+</html>

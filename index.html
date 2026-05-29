@@ -1,0 +1,372 @@
+<!DOCTYPE html>
+<html lang="tr">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover" />
+  <meta name="theme-color" content="#F5F1EA" />
+  <meta name="description" content="Alâ Fresh — Restoran, kafe, pastane ve fırınlara toptan taze meyve ve sebze tedariği. Günlük, kaliteli ve hızlı teslimat." />
+  <title>Alâ Fresh — Toptan Taze Meyve & Sebze Tedariği</title>
+
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+  <link
+    href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@0,300;0,400;0,500;0,600;1,300;1,400&family=Inter:wght@300;400;500;600&display=swap"
+    rel="stylesheet"
+  />
+  <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/swiper@11/swiper-bundle.min.css" />
+  <link rel="stylesheet" href="styles.css?v=18" />
+</head>
+<body>
+  <!-- Page loader -->
+  <div class="loader" id="loader" aria-hidden="true">
+    <img class="loader__logo" src="site logo2.svg" alt="Alâ Fresh" />
+    <div class="loader__bar"><span></span></div>
+  </div>
+
+  <!-- Navigation -->
+  <header class="nav" id="nav">
+    <a href="#hero" class="nav__brand" aria-label="Alâ Fresh ana sayfa">
+      <img class="nav__logo" src="site logo2.svg" alt="Alâ Fresh" />
+    </a>
+    <nav class="nav__links" aria-label="Birincil">
+      <a href="#products">Ürünler</a>
+      <a href="#about">Hakkımızda</a>
+      <a href="#contact">İletişim</a>
+    </nav>
+    <button class="nav__burger" id="navBurger" aria-label="Menü" aria-expanded="false">
+      <span></span><span></span>
+    </button>
+  </header>
+
+  <!-- Mobile drawer -->
+  <div class="drawer" id="drawer" aria-hidden="true">
+    <a href="#products">Ürünler</a>
+    <a href="#about">Hakkımızda</a>
+    <a href="#contact">İletişim</a>
+  </div>
+
+  <!-- HERO — scroll-linked canvas frame scrubbing -->
+  <section class="hero" id="hero">
+    <div class="hero__sticky">
+      <!-- Shared canvas: desktop uses initCanvasScrubBuffered (videomp_.mp4),
+           mobile uses initMobileCanvasScrub (cilek-frames/ JPG sequence). -->
+      <canvas class="hero__canvas" id="heroCanvas" aria-hidden="true"></canvas>
+
+      <!-- Intro overlay -->
+      <div class="hero__intro" data-hero-overlay="intro">
+        <p class="hero__eyebrow">Tarladan masaya</p>
+        <h1 class="hero__title">
+          <span>Seçimden teslimata</span>
+          <span>her adımda <em>titizlik</em></span>
+        </h1>
+      </div>
+
+      <!-- Mid overlay -->
+      <div class="hero__mid" data-hero-overlay="mid">
+        <p class="hero__line">
+          Her kasada aynı <em>özen</em>,<br />her teslimatta aynı <em>güven</em>.
+        </p>
+      </div>
+
+      <!-- End overlay -->
+      <div class="hero__end" data-hero-overlay="end">
+        <h2 class="hero__final">
+          <em>Taze</em> gelir, <em>vaktinde</em> gelir.
+        </h2>
+      </div>
+
+      <!-- Scroll cue -->
+      <div class="hero__cue">
+        <span>Kaydırın</span>
+        <i></i>
+      </div>
+    </div>
+  </section>
+
+  <!-- Tagline marquee -->
+  <section class="marquee" aria-label="Slogan">
+    <div class="marquee__track">
+      <span>Hızlı Teslimat</span><span>·</span>
+      <span>Günlük Taze Ürünler</span><span>·</span>
+      <span>7/24 Sevkiyat</span><span>·</span>
+      <span>Hızlı Teslimat</span><span>·</span>
+      <span>Günlük Taze Ürünler</span><span>·</span>
+      <span>7/24 Sevkiyat</span><span>·</span>
+      <span>Hızlı Teslimat</span><span>·</span>
+      <span>Günlük Taze Ürünler</span><span>·</span>
+      <span>7/24 Sevkiyat</span><span>·</span>
+      <span>Hızlı Teslimat</span><span>·</span>
+      <span>Günlük Taze Ürünler</span><span>·</span>
+      <span>7/24 Sevkiyat</span><span>·</span>
+    </div>
+  </section>
+
+  <!-- PRODUCTS -->
+  <section class="products" id="products">
+    <header class="section-head">
+      <p class="section-head__eyebrow">01 — Ürün Yelpazemiz</p>
+      <h2 class="section-head__title">
+        <em>İyi seçilmiş</em><br />meyve, her mevsim.
+      </h2>
+    </header>
+
+    <div class="swiper products__swiper" id="productsSwiper">
+      <div class="swiper-wrapper">
+        <article class="swiper-slide product">
+          <div class="product__media">
+            <img src="urun-cilek.jpg" alt="Çilek" loading="lazy" />
+          </div>
+          <div class="product__meta">
+            <span class="product__index">01</span>
+            <h3 class="product__name">Çilek</h3>
+          </div>
+        </article>
+
+        <article class="swiper-slide product">
+          <div class="product__media">
+            <img src="urun-altin-cilek.jpg" alt="Altın Çilek" loading="lazy" />
+          </div>
+          <div class="product__meta">
+            <span class="product__index">02</span>
+            <h3 class="product__name">Altın Çilek</h3>
+          </div>
+        </article>
+
+        <article class="swiper-slide product">
+          <div class="product__media">
+            <img src="urun-frambuaz.jpg" alt="Frambuaz" loading="lazy" />
+          </div>
+          <div class="product__meta">
+            <span class="product__index">03</span>
+            <h3 class="product__name">Frambuaz</h3>
+          </div>
+        </article>
+
+        <article class="swiper-slide product">
+          <div class="product__media">
+            <img src="urun-bogurtlen.jpg" alt="Böğürtlen" loading="lazy" />
+          </div>
+          <div class="product__meta">
+            <span class="product__index">04</span>
+            <h3 class="product__name">Böğürtlen</h3>
+          </div>
+        </article>
+
+        <article class="swiper-slide product">
+          <div class="product__media">
+            <img src="urun-yaban-mersini.jpg" alt="Yaban Mersini" loading="lazy" />
+          </div>
+          <div class="product__meta">
+            <span class="product__index">05</span>
+            <h3 class="product__name">Yaban Mersini</h3>
+          </div>
+        </article>
+
+        <article class="swiper-slide product">
+          <div class="product__media">
+            <img src="urun-frenk-uzumu.jpg" alt="Frenk Üzümü" loading="lazy" />
+          </div>
+          <div class="product__meta">
+            <span class="product__index">06</span>
+            <h3 class="product__name">Frenk Üzümü</h3>
+          </div>
+        </article>
+
+        <article class="swiper-slide product">
+          <div class="product__media">
+            <img src="urun-kivi.jpg" alt="Kivi" loading="lazy" />
+          </div>
+          <div class="product__meta">
+            <span class="product__index">07</span>
+            <h3 class="product__name">Kivi</h3>
+          </div>
+        </article>
+
+        <article class="swiper-slide product">
+          <div class="product__media">
+            <img src="urun-muz.jpg" alt="Muz" loading="lazy" />
+          </div>
+          <div class="product__meta">
+            <span class="product__index">08</span>
+            <h3 class="product__name">Muz</h3>
+          </div>
+        </article>
+
+        <article class="swiper-slide product">
+          <div class="product__media">
+            <img src="urun-portakal.jpg" alt="Portakal" loading="lazy" />
+          </div>
+          <div class="product__meta">
+            <span class="product__index">09</span>
+            <h3 class="product__name">Portakal</h3>
+          </div>
+        </article>
+
+        <article class="swiper-slide product">
+          <div class="product__media">
+            <img src="urun-kumkat.jpg" alt="Kumkat" loading="lazy" />
+          </div>
+          <div class="product__meta">
+            <span class="product__index">10</span>
+            <h3 class="product__name">Kumkat</h3>
+          </div>
+        </article>
+
+        <article class="swiper-slide product">
+          <div class="product__media">
+            <img src="urun-lime.jpg" alt="Lime" loading="lazy" />
+          </div>
+          <div class="product__meta">
+            <span class="product__index">11</span>
+            <h3 class="product__name">Lime</h3>
+          </div>
+        </article>
+
+        <article class="swiper-slide product">
+          <div class="product__media">
+            <img src="urun-kuzu-kulagi.jpg" alt="Kuzu Kulağı" loading="lazy" />
+          </div>
+          <div class="product__meta">
+            <span class="product__index">12</span>
+            <h3 class="product__name">Kuzu Kulağı</h3>
+          </div>
+        </article>
+      </div>
+
+      <div class="products__controls">
+        <button class="products__btn" id="prodPrev" aria-label="Önceki">←</button>
+        <div class="products__progress"><span id="prodProgress"></span></div>
+        <button class="products__btn" id="prodNext" aria-label="Sonraki">→</button>
+      </div>
+    </div>
+
+    <!-- Full typographic catalog — every product we supply -->
+    <div class="catalog">
+      <p class="catalog__eyebrow">Tam Yelpaze · Mevsime göre değişir</p>
+      <div class="catalog__group">
+        <h3 class="catalog__title">Meyveler</h3>
+        <ul class="catalog__list">
+          <li>Çilek</li><li>Altın Çilek</li><li>Muz</li><li>Elma</li><li>Armut</li>
+          <li>Portakal</li><li>Mandalina</li><li>Kumkat</li><li>Limon</li><li>Lime</li><li>Greyfurt</li><li>Nar</li>
+          <li>İncir</li><li>Üzüm</li><li>Frenk Üzümü</li><li>Kiraz</li><li>Vişne</li>
+          <li>Yaban Mersini</li><li>Ahududu</li><li>Frambuaz</li><li>Böğürtlen</li><li>Şeftali</li><li>Nektarin</li>
+          <li>Kayısı</li><li>Erik</li><li>Kavun</li><li>Karpuz</li>
+        </ul>
+      </div>
+
+      <div class="catalog__group">
+        <h3 class="catalog__title">Tropikal</h3>
+        <ul class="catalog__list">
+          <li>Mango</li><li>Ananas</li><li>Papaya</li><li>Avokado</li>
+          <li>Kivi</li><li>Hindistan Cevizi</li>
+        </ul>
+      </div>
+
+      <div class="catalog__group">
+        <h3 class="catalog__title">Sebzeler & Yeşillikler</h3>
+        <ul class="catalog__list">
+          <li>Domates</li><li>Salatalık</li><li>Biber</li><li>Sivri Biber</li><li>Patlıcan</li>
+          <li>Kabak</li><li>Patates</li><li>Tatlı Patates</li><li>Soğan</li><li>Sarımsak</li>
+          <li>Havuç</li><li>Pırasa</li><li>Brokoli</li><li>Karnabahar</li><li>Marul</li>
+          <li>Kıvırcık</li><li>Roka</li><li>Ispanak</li><li>Kuzu Kulağı</li><li>Lahana</li>
+          <li>Kırmızı Lahana</li><li>Maydanoz</li><li>Dereotu</li><li>Nane</li><li>Taze Soğan</li>
+          <li>Mısır</li><li>Bezelye</li>
+        </ul>
+      </div>
+    </div>
+  </section>
+
+  <!-- ABOUT -->
+  <section class="about" id="about">
+    <p class="section-head__eyebrow">02 — Hakkımızda</p>
+    <h2 class="about__statement reveal-words">
+      <em>Alâ Fresh</em> olarak restoran, kafe, pastane ve fırınlara
+      taze sebze ve meyve tedariği sağlıyoruz. Günlük, kaliteli ve
+      güvenilir ürünleri <em>hızlı teslimat</em> anlayışıyla ulaştırıyoruz.
+    </h2>
+
+  </section>
+
+  <!-- CONTACT -->
+  <section class="contact" id="contact">
+    <p class="section-head__eyebrow">03 — İletişim</p>
+    <h2 class="contact__title">
+      <em>Uzun vadeli</em><br />tedarik için;
+    </h2>
+
+    <div class="contact__grid">
+      <form class="contact__form" id="contactForm" novalidate
+            action="https://formsubmit.co/ajax/alaattinkaraman@hotmail.com" method="POST">
+        <label class="field">
+          <span>Ad Soyad</span>
+          <input type="text" name="name" required autocomplete="name" />
+        </label>
+        <label class="field">
+          <span>Şirket</span>
+          <input type="text" name="company" autocomplete="organization" />
+        </label>
+        <label class="field">
+          <span>E-posta</span>
+          <input type="email" name="email" required autocomplete="email" />
+        </label>
+        <label class="field">
+          <span>Telefon</span>
+          <input type="tel" name="phone" autocomplete="tel" />
+        </label>
+        <label class="field field--full">
+          <span>Talebiniz</span>
+          <textarea name="message" rows="4" required></textarea>
+        </label>
+
+        <!-- Formsubmit options: subject + spam protection + no captcha redirect -->
+        <input type="hidden" name="_subject" value="Alâ Fresh — Yeni iletişim formu talebi" />
+        <input type="hidden" name="_template" value="table" />
+        <input type="hidden" name="_captcha" value="false" />
+        <input type="text" name="_honey" style="display:none" tabindex="-1" autocomplete="off" />
+
+        <button type="submit" class="contact__submit">
+          <span>Talebimi ilet</span>
+          <i>→</i>
+        </button>
+        <p class="contact__note" id="formNote" role="status" aria-live="polite"></p>
+      </form>
+
+      <aside class="contact__aside">
+        <div>
+          <p class="contact__label">Teslimat Bölgesi</p>
+          <p class="contact__value">
+            İstanbul Anadolu yakasına<br />
+            hızlı teslimat
+          </p>
+        </div>
+        <div>
+          <p class="contact__label">E-posta</p>
+          <a class="contact__value" href="mailto:alaattinkaraman@hotmail.com">alaattinkaraman@hotmail.com</a>
+        </div>
+        <div>
+          <p class="contact__label">Telefon</p>
+          <a class="contact__value" href="tel:+905079553261">0 507 955 32 61</a>
+        </div>
+        <div>
+          <p class="contact__label">Saatler</p>
+          <p class="contact__value">7 / 24 · Kesintisiz Hizmet</p>
+        </div>
+      </aside>
+    </div>
+  </section>
+
+  <!-- FOOTER -->
+  <footer class="footer">
+    <div class="footer__row">
+      <span class="footer__brand">Alâ Fresh</span>
+      <span class="footer__copy">© <span id="year"></span> Alâ Fresh Toptan Meyve & Sebze. Tüm hakları saklıdır.</span>
+    </div>
+  </footer>
+
+  <!-- Scripts -->
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/gsap/3.12.5/gsap.min.js"></script>
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/gsap/3.12.5/ScrollTrigger.min.js"></script>
+  <script src="https://cdn.jsdelivr.net/npm/swiper@11/swiper-bundle.min.js"></script>
+  <script src="script.js?v=18" defer></script>
+</body>
+</html>
