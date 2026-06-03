@@ -119,14 +119,15 @@
   }
 
   /* =========================================================
-     CANVAS FRAME SCRUBBING — In-memory frame buffer (recommended)
+     DESKTOP CANVAS FRAME SCRUBBING — pre-extracted JPG sequence
      ---------------------------------------------------------
-     Decodes every frame of videomp_.mp4 ONCE at startup into an
-     array of ImageBitmaps, then scrubs by drawing pre-decoded
-     bitmaps. Eliminates seek latency entirely.
-
-     Trade-off: ~2–4s warm-up while frames decode. We surface that
-     progress in the page loader.
+     Draws a pre-rendered JPG image sequence (cilek-frames-desktop/
+     frame-001.jpg … 192.jpg) instead of seek-decoding videomp_.mp4
+     in the browser. Same 720p source — so resolution is unchanged —
+     but pixel-exact frames with no H.264 seek softness and no 2–4s
+     decode warm-up, for a cleaner, smoother scrub. Frames stream in
+     parallel; progress is surfaced in the page loader. No-op on
+     mobile (initMobileCanvasScrub owns the <=768px hero).
      ========================================================= */
   async function initCanvasScrubBuffered() {
     // ---------- MOBILE EARLY RETURN ----------
@@ -141,43 +142,14 @@
     if (!canvas) return;
     const ctx = canvas.getContext('2d', { alpha: false });
 
-    // Hidden source video
-    const video = document.createElement('video');
-    video.muted = true;
-    video.defaultMuted = true;
-    video.playsInline = true;
-    video.setAttribute('playsinline', '');
-    video.setAttribute('webkit-playsinline', '');
-    video.setAttribute('muted', '');
-    video.preload = 'auto';
-    video.src = 'videomp_.mp4';
-    video.load();
-
-    // Wait for metadata so we know duration + intrinsic size.
-    try {
-      await new Promise((resolve, reject) => {
-        video.addEventListener('loadedmetadata', resolve, { once: true });
-        video.addEventListener('error', () => reject(new Error('video error')), { once: true });
-      });
-    } catch (e) {
-      console.warn('[ALFRESH] videomp_.mp4 yüklenemedi. Lütfen `python3 -m http.server` ile çalıştırın.');
-      window.dispatchEvent(new Event('alfresh:ready'));
-      return;
-    }
-
-    const FPS = 22;            // was 30 — 22fps is indistinguishable for scroll scrub, 27% fewer frames
-    const duration = isFinite(video.duration) && video.duration > 0 ? video.duration : 5;
-    const totalFrames = Math.max(2, Math.floor(duration * FPS));
-    const MAX_W = 1280;        // was 1600 — still HD at typical desktop sizes
-
-    // Offscreen capture buffer
-    const off = document.createElement('canvas');
-    const ratio = Math.min(1, MAX_W / (video.videoWidth || MAX_W));
-    off.width  = Math.max(1, Math.round((video.videoWidth  || MAX_W) * ratio));
-    off.height = Math.max(1, Math.round((video.videoHeight || 900)   * ratio));
-    const octx = off.getContext('2d', { alpha: false });
-
-    const frames = new Array(totalFrames);
+    // ----- Image sequence config -----
+    // Pre-extracted JPG frames of videomp_.mp4 (1280×720, 24fps → 192 frames),
+    // replacing the previous in-browser MP4 seek-decode. Pixel-exact frames,
+    // no H.264 seek softness and no 2–4s decode warm-up. Same 720p source, so
+    // the resolution is unchanged — the win is a cleaner, smoother scrub.
+    const FRAME_COUNT = 192;
+    const framePath = (n) => `cilek-frames-desktop/frame-${String(n).padStart(3, '0')}.jpg?v=1`;
+    const frames = new Array(FRAME_COUNT);     // frames[0] => frame-001.jpg
     const loaderBar = document.querySelector('.loader__bar span');
 
     // ----- Drawing primitives -----
@@ -192,14 +164,15 @@
       canvas.height = Math.max(1, Math.floor(h * dpr));
     }
 
+    const isReady = (img) => img && img.complete && img.naturalWidth > 0;
+
     function findFrame(idx) {
-      // Walk outward to nearest decoded neighbour — lets paint() succeed
-      // even while later frames are still decoding in the background.
-      if (frames[idx]) return frames[idx];
-      const N = frames.length;
-      for (let d = 1; d < N; d++) {
-        if (idx - d >= 0 && frames[idx - d]) return frames[idx - d];
-        if (idx + d < N  && frames[idx + d]) return frames[idx + d];
+      // Walk outward to nearest loaded neighbour — lets paint() succeed
+      // even while later frames are still streaming in.
+      if (isReady(frames[idx])) return frames[idx];
+      for (let d = 1; d < FRAME_COUNT; d++) {
+        if (idx - d >= 0 && isReady(frames[idx - d])) return frames[idx - d];
+        if (idx + d < FRAME_COUNT && isReady(frames[idx + d])) return frames[idx + d];
       }
       return null;
     }
@@ -209,7 +182,7 @@
       if (!f) return;
       currentIdx = idx;
       const cw = canvas.width, ch = canvas.height;
-      const iw = f.width, ih = f.height;
+      const iw = f.naturalWidth, ih = f.naturalHeight;
       const baseScale = Math.max(cw / iw, ch / ih);
       const scale = baseScale * OVERSCAN;
       const dw = iw * scale, dh = ih * scale;
@@ -217,38 +190,27 @@
       // edges (where the "Veo" watermark sits).
       const dx = 0;
       const dy = 0;
-
-      if (typeof ImageBitmap !== 'undefined' && f instanceof ImageBitmap) {
-        ctx.drawImage(f, dx, dy, dw, dh);
-      } else {
-        off.width = iw; off.height = ih;
-        octx.putImageData(f, 0, 0);
-        ctx.drawImage(off, dx, dy, dw, dh);
-      }
+      ctx.imageSmoothingEnabled = true;
+      ctx.imageSmoothingQuality = 'high';
+      ctx.drawImage(f, dx, dy, dw, dh);
     }
 
-    // ----- seekTo helper -----
-    const seekTo = (t) => new Promise((resolve) => {
-      const handler = () => { video.removeEventListener('seeked', handler); resolve(); };
-      video.addEventListener('seeked', handler);
-      try { video.currentTime = t; } catch (_) { resolve(); }
+    // Load a single frame; resolves whether it succeeds or fails.
+    const loadFrame = (i) => new Promise((resolve) => {
+      const img = new Image();
+      img.decoding = 'async';
+      img.onload = () => { frames[i] = img; resolve(true); };
+      img.onerror = () => { resolve(false); };
+      img.src = framePath(i + 1);
+      frames[i] = img; // store eagerly so findFrame can see it once complete
     });
 
-    // Helper to decode a single frame into frames[i]
-    const decodeFrame = async (i) => {
-      const t = Math.min(duration - 0.0001, i / FPS);
-      await seekTo(t);
-      octx.drawImage(video, 0, 0, off.width, off.height);
-      try {
-        frames[i] = await createImageBitmap(off);
-      } catch (_) {
-        frames[i] = octx.getImageData(0, 0, off.width, off.height);
-      }
-    };
-
-    // ----- Frame 0 decoded first → reveal page immediately -----
-    await decodeFrame(0);
-    if (loaderBar) loaderBar.style.width = (1 / totalFrames * 100) + '%';
+    // ----- Frame 0 first → reveal page immediately -----
+    const firstOk = await loadFrame(0);
+    if (!firstOk) {
+      console.warn('[ALFRESH] cilek-frames-desktop/ resim dizisi yüklenemedi. Lütfen `python3 -m http.server` ile çalıştırın.');
+    }
+    if (loaderBar) loaderBar.style.width = (1 / FRAME_COUNT * 100) + '%';
 
     sizeCanvas();
     paint(0);
@@ -256,7 +218,7 @@
 
     const state = { f: 0 };
     gsap.to(state, {
-      f: totalFrames - 1,
+      f: FRAME_COUNT - 1,
       ease: 'none',
       snap: { f: 1 },
       scrollTrigger: {
@@ -267,7 +229,7 @@
         invalidateOnRefresh: true
       },
       onUpdate: () => {
-        const idx = Math.max(0, Math.min(totalFrames - 1, Math.round(state.f)));
+        const idx = Math.max(0, Math.min(FRAME_COUNT - 1, Math.round(state.f)));
         if (idx !== currentIdx) paint(idx);
       }
     });
@@ -278,12 +240,18 @@
       ScrollTrigger.refresh();
     });
 
-    // ----- Background decode of remaining frames -----
-    // paint()'s findFrame() falls back to the nearest decoded neighbour
-    // so the user can scroll immediately; scrub gets smoother as frames fill in.
-    for (let i = 1; i < totalFrames; i++) {
-      await decodeFrame(i);
-      if (loaderBar) loaderBar.style.width = ((i + 1) / totalFrames * 100) + '%';
+    // ----- Background-load every remaining frame IN PARALLEL -----
+    // Firing all requests at once lets the browser stream them in quickly,
+    // so the scrub fills in smoothly in both directions (mirrors the mobile
+    // pipeline). findFrame() falls back to the nearest loaded neighbour until
+    // each frame arrives, so the user can scroll immediately.
+    let loaded = 1;
+    for (let i = 1; i < FRAME_COUNT; i++) {
+      loadFrame(i).then(() => {
+        loaded++;
+        if (loaderBar) loaderBar.style.width = (loaded / FRAME_COUNT * 100) + '%';
+        if (i === currentIdx) paint(i); // sharpen whatever is on screen now
+      });
     }
   }
 
